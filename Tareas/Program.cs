@@ -7,14 +7,16 @@ internal class Program
     private static readonly HttpClient client = new HttpClient();
     private static async Task Main(string[] args)
     {
+        
         var tareas = await ObtenerTareas();
 
         foreach (var t in tareas)
         {
             t.Print();
         }
+        var ser = JsonSerializer.Serialize(tareas);
+        File.WriteAllText(".\\tareas.json",ser);
 
-        
     }
 
     private static async Task<List<Tarea>> ObtenerTareas()
