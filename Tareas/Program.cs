@@ -7,11 +7,18 @@ internal class Program
     private static readonly HttpClient client = new HttpClient();
     private static async Task Main(string[] args)
     {
-        var l = await ObtenerTareas();
-        foreach (var t in l)
+        var tareas = await ObtenerTareas();
+        var strs = new string[tareas.Count];
+        int i = 0;
+        foreach (var t in tareas)
         {
-            Console.WriteLine($"{t.Id}: \"{t.Title}\" -> {(t.Completed?"Completada":"No completada")}");
+            var s = t.ToString();
+            Console.WriteLine(s);
+            strs[i] = s;
+            i++;
         }
+        File.WriteAllLines("",strs);
+        
     }
 
     private static async Task<List<Tarea>> ObtenerTareas()

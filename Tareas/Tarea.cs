@@ -15,4 +15,9 @@ public class Tarea
     [JsonPropertyName("completed")]
     public bool Completed { get; set; }
 
+    override public string ToString()
+    {
+        return $"[{this.Id}]\t{(this.Completed? "Compl." : "Pend.")}\t\"{this.Title}\"";
+    }
+
 }
