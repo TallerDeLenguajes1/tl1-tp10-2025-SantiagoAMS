@@ -35,7 +35,7 @@ public class Usuario
 
     public override string ToString()
     {
-        return $"\"{this.Nombre}\"\t | {this.Email}\t | {this.Domicilio}";
+        return $"{this.Nombre.PadRight(30)} | {this.Email.PadRight(30)} | {(this.Domicilio.Street+" "+this.Domicilio.Suite).PadRight(40)}";
     }
 }
 public class Address
