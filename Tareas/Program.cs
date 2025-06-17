@@ -8,16 +8,12 @@ internal class Program
     private static async Task Main(string[] args)
     {
         var tareas = await ObtenerTareas();
-        var strs = new string[tareas.Count];
-        int i = 0;
+
         foreach (var t in tareas)
         {
-            var s = t.ToString();
-            Console.WriteLine(s);
-            strs[i] = s;
-            i++;
+            t.Print();
         }
-        File.WriteAllLines("",strs);
+
         
     }
 

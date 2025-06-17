@@ -17,7 +17,16 @@ public class Tarea
 
     override public string ToString()
     {
-        return $"[{this.Id}]\t{(this.Completed? "Compl." : "Pend.")}\t\"{this.Title}\"";
+        return $"{(this.Completed ? "Compl." : "Pend.")}\t\"{this.Title}\"";
+    }
+
+    public void Print()
+    {
+        ConsoleColor current = Console.ForegroundColor;
+        Console.ForegroundColor = this.Completed ? ConsoleColor.Green : ConsoleColor.Yellow;
+        Console.Write($"{(this.Completed ? "Compl." : "Pend.")}\t");
+        Console.ForegroundColor = current;
+        Console.WriteLine($"\"{this.Title}\"");
     }
 
 }
