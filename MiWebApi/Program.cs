@@ -1,4 +1,6 @@
 ﻿using System.Data;
+using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -8,7 +10,6 @@ internal class Program
 {
     private static readonly HttpClient client = new HttpClient();
     private static Apis? seleccionada = null;
-
     private enum Apis
     {
         Chistes,
@@ -22,10 +23,10 @@ internal class Program
     private static readonly List<Chiste> chistes = [];
     private static readonly List<Universidad> universidades = [];
 
-    #pragma warning disable
+#pragma warning disable
     private static async Task Main(string[] args)
     {
-        #pragma warning enable
+#pragma warning enable
         bool c = true;
         while (c)
         {
@@ -60,10 +61,10 @@ internal class Program
                     switch (seleccionada)
                     {
                         case Apis.Chistes:
-                            BuscarChiste();
+                            await BuscarChiste();
                             break;
                         case Apis.Universidades:
-                            BuscarUniversidad();
+                            await BuscarUniversidad();
                             break;
                     }
 
@@ -71,7 +72,7 @@ internal class Program
                 case 2:
                     Console.Clear();
                     CambiarAPI();
-                    Utilidades.Pausa();
+                    //Utilidades.Pausa();
                     break;
                 case 3:
                     Console.Clear();
@@ -94,31 +95,32 @@ internal class Program
 
         }
     }
-    private static async void BuscarChiste()
+    private static async Task<bool> BuscarChiste()
     {
         var query = links[(int)Apis.Chistes];
         var c = await LlamarApi<Chiste>(query);
         if (c.Count <= 0)
         {
             Utilidades.PrintError("No se obtuvo ningun chiste (no tiene gracia)...");
-            return;
+            return false;
         }
         ListarChistes(c);
         chistes.AddRange(c);
         Utilidades.Pausa();
-
+        return true;
     }
-    private static async void BuscarUniversidad()
+    private static async Task<bool> BuscarUniversidad()
     {
         var uni = await LlamarApi<Universidad>(links[(int)Apis.Universidades] + (Random.Shared.Next(0, 85)));
         if (uni.Count <= 0)
         {
             Utilidades.PrintError("No se obtuvo ninguna universidad...");
-            return;
+            return false;
         }
         ListarUniversidades(uni);
         universidades.AddRange(uni);
         Utilidades.Pausa();
+        return true;
 
     }
 
@@ -188,7 +190,48 @@ internal class Program
 
     private static void GuardarLineas()
     {
+        if (!Utilidades.LeerBooleano("¿Guardar lineas?"))
+        {
+            return;
+        }
+        var valores = Enum.GetValues<Apis>();
+        try
+        {
+            foreach (var v in valores)
+            {
+                string carpeta = $".\\{v}.json";
+                switch (v)
+                {
+                    case Apis.Chistes:
+                        GuardarLista(chistes, carpeta);
+                        break;
+                    case Apis.Universidades:
+                        GuardarLista(universidades, carpeta);
+                        break;
+                }
+            }
+            Utilidades.WriteColoredLine("Guardado exitoso", ConsoleColor.Green);
+        }
+        catch (Exception e)
+        {
+            Utilidades.PrintError("Ha ocurrido un error: " + e.Message);
+        }
+    }
 
+    private static async void GuardarLista<T>(List<T> t, string ruta) where T : class
+    {
+        Console.WriteLine($"Archivo: \"{ruta}\"");
+
+        using (var stream = new FileStream(ruta, FileMode.Create, FileAccess.Write))
+        {
+            using (var sw = new StreamWriter(stream, Encoding.GetEncoding("latin1")))
+            {
+                foreach (var a in t)
+                {
+                    await sw.WriteLineAsync(JsonSerializer.Serialize<T>(a));
+                }
+            }
+        }
     }
 
     private static async Task<List<T>> LlamarApi<T>(string url) where T : class
