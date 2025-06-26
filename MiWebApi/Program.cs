@@ -1,18 +1,17 @@
-﻿internal class Program
+﻿using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
+
+internal class Program
 {
     private static readonly HttpClient client = new HttpClient();
 
     private static Task Main(string[] args)
     {
-        
+
+        return null;
 
 
-    }
-
-    private static Task<List<Object>> Obtener(string url, Class c){
-        var ret = await client.GetAsync(@"https://");
-        ret.EnsureSuccessStatusCode();
-        var response = await ret.Content.ReadAsStringAsync();
     }
 
 }
