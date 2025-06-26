@@ -23,14 +23,15 @@ internal class Program
 
     private static Task Main(string[] args)
     {
-
-        while (true)
+        bool c = true;
+        while (c)
         {
             Console.Clear();
             Console.WriteLine("==========================");
             Console.WriteLine(" 1 - Consultar API");
             Console.WriteLine(" 2 - Cambiar API");
-            Console.WriteLine(" 3 - Guardar lineas");
+            Console.WriteLine(" 3 - Mostrar lineas");
+            Console.WriteLine(" 4 - Guardar lineas");
             Console.WriteLine(" 4 - Salir");
             Console.WriteLine("==========================");
             Console.WriteLine(" API: " + (seleccionada == null ? "Ninguna" : seleccionada));
@@ -42,7 +43,7 @@ internal class Program
                     if (seleccionada == null)
                     {
                         Utilidades.PrintError("Error, no seleccionaste una API...");
-                        
+
                     }
                     switch (seleccionada)
                     {
@@ -58,25 +59,44 @@ internal class Program
                     CambiarAPI();
                     break;
                 case 3:
+                    MostrarLineas();
                     break;
                 case 4:
+                    GuardarLineas();
+                    break;
+                case 5:
+                    c = false;
                     break;
                 default:
+                    Utilidades.PrintError("Opción incorrecta...");
                     break;
             }
-        }
-    }
 
+        }
+        return null;
+    }
+    private static async void BuscarChiste()
+    {
+        var chiste = await LlamarApi<Chiste>(links[(int)Apis.Universidades]);
+        if (chiste.Count() <= 0)
+        {
+            Utilidades.PrintError("No se obtuvo ningun chiste (no tiene gracia)...");
+            return;
+        }
+
+
+    }
     private static async void BuscarUniversidad()
     {
-        var uni = await LlamarApi<Universidad>(links[1] + (Random.Shared.Next(0, 85)));
+        var uni = await LlamarApi<Universidad>(links[(int)Apis.Chistes] + (Random.Shared.Next(0, 85)));
+        if (uni.Count() <= 0)
+        {
+            Utilidades.PrintError("No se obtuvo ninguna universidad...");
+            return;
+        }
         //resultados.Add(Encoding.GetEncoding("latin1").GetString());
     }
 
-    private static async void BuscarChiste()
-    {
-        var uni = await LlamarApi<Universidad>(links[0]);
-    }
 
     private static void CambiarAPI()
     {
@@ -105,7 +125,17 @@ internal class Program
             Console.WriteLine($" {i} - {api}");
             i++;
         }
-        
+
+    }
+
+    private static void MostrarLineas()
+    {
+
+    }
+
+    private static void GuardarLineas()
+    {
+
     }
 
     private static async Task<List<T>> LlamarApi<T>(string url) where T : class
