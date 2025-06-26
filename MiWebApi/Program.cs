@@ -41,17 +41,21 @@ internal class Program
                 case 1:
                     if (seleccionada == null)
                     {
-                        break;
+                        Utilidades.PrintError("Error, no seleccionaste una API...");
+                        
                     }
                     switch (seleccionada)
                     {
                         case Apis.Chistes:
+                            BuscarChiste();
                             break;
                         case Apis.Universidades:
+                            BuscarUniversidad();
                             break;
                     }
                     break;
                 case 2:
+                    CambiarAPI();
                     break;
                 case 3:
                     break;
@@ -63,26 +67,45 @@ internal class Program
         }
     }
 
-    private static void BuscarUniversidades()
+    private static async void BuscarUniversidad()
     {
-        string c = Utilidades.LeerString("Ingresa un pais (en ingles)");
-        var uni = LlamarApi<Universidad>(links[1] + (Random.Shared.Next(0, 85)));
-        resultados.Add(Encoding.GetEncoding("latin1").GetString());
+        var uni = await LlamarApi<Universidad>(links[1] + (Random.Shared.Next(0, 85)));
+        //resultados.Add(Encoding.GetEncoding("latin1").GetString());
     }
 
-    private static void BuscarChistes()
+    private static async void BuscarChiste()
     {
-
+        var uni = await LlamarApi<Universidad>(links[0]);
     }
 
-    private static void CambiarApi()
+    private static void CambiarAPI()
     {
-        Console.WriteLine();
+        ListarApis();
+        var valores = Enum.GetValues<Apis>();
+        int n = -1;
+        while (n < 0 || n >= valores.Length)
+        {
+            n = Utilidades.LeerEntero("Ingresa una opción");
+            if (n < 0 || n >= valores.Length)
+            {
+                Utilidades.PrintError("Ingresá una opción válida");
+            }
+        }
+        seleccionada = valores[n];
+        Utilidades.PrintSuccess($"Api seleccionada: {seleccionada}");
+
     }
 
     private static void ListarApis()
     {
-        Console.WriteLine("Apis disponibles");
+        Console.WriteLine("APIs disponibles");
+        int i = 0;
+        foreach (var api in Enum.GetValues<Apis>())
+        {
+            Console.WriteLine($" {i} - {api}");
+            i++;
+        }
+        
     }
 
     private static async Task<List<T>> LlamarApi<T>(string url) where T : class
