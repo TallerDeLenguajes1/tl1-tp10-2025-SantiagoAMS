@@ -1,11 +1,12 @@
-﻿using System.Text.Json;
+﻿using System.Text;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
 internal class Program
 {
     private static readonly HttpClient client = new HttpClient();
-    private static int indexApiSeleccionada = -1;
+    private static Apis? seleccionada = null;
 
     private enum Apis
     {
@@ -32,13 +33,23 @@ internal class Program
             Console.WriteLine(" 3 - Guardar lineas");
             Console.WriteLine(" 4 - Salir");
             Console.WriteLine("==========================");
-            Console.WriteLine(" API: " + (indexApiSeleccionada < 0 ? "Ninguna" : Enum.GetValues<Apis>()[indexApiSeleccionada]));
+            Console.WriteLine(" API: " + (seleccionada == null ? "Ninguna" : seleccionada));
             int opc = Utilidades.LeerEntero();
 
             switch (opc)
             {
                 case 1:
-
+                    if (seleccionada == null)
+                    {
+                        break;
+                    }
+                    switch (seleccionada)
+                    {
+                        case Apis.Chistes:
+                            break;
+                        case Apis.Universidades:
+                            break;
+                    }
                     break;
                 case 2:
                     break;
@@ -55,10 +66,11 @@ internal class Program
     private static void BuscarUniversidades()
     {
         string c = Utilidades.LeerString("Ingresa un pais (en ingles)");
-        var unis = LlamarApi<Universidad>(links[1]+(Random.Shared.Next(0,85)));
+        var uni = LlamarApi<Universidad>(links[1] + (Random.Shared.Next(0, 85)));
+        resultados.Add(Encoding.GetEncoding("latin1").GetString());
     }
 
-    private static void BuscarBromas()
+    private static void BuscarChistes()
     {
 
     }
