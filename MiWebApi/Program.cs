@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Data;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -35,7 +36,7 @@ internal class Program
             Console.WriteLine(" 5 - Salir");
             Console.WriteLine("==========================");
             Console.WriteLine(" API: " + (seleccionada == null ? "Ninguna" : seleccionada));
-            int opc = Utilidades.LeerEntero("Ingresá una opción:");
+            int opc = Utilidades.LeerEntero("\nIngresá una opción:");
             switch (opc)
             {
                 case 1:
@@ -80,13 +81,13 @@ internal class Program
     private static async void BuscarChiste()
     {
         var query = links[(int)Apis.Chistes];
-        Console.WriteLine("Query: "+query);
         var c = await LlamarApi<Chiste>(query);
         if (c.Count <= 0)
         {
             Utilidades.PrintError("No se obtuvo ningun chiste (no tiene gracia)...");
             return;
         }
+        ListarChistes(c);
         chistes.AddRange(c);
 
     }
@@ -98,6 +99,7 @@ internal class Program
             Utilidades.PrintError("No se obtuvo ninguna universidad...");
             return;
         }
+        ListarUniversidades(uni);
         universidades.AddRange(uni);
         //resultados.Add(Encoding.GetEncoding("latin1").GetString());
     }
@@ -135,18 +137,35 @@ internal class Program
 
     private static void MostrarRescatado()
     {
-        Console.WriteLine("Mostrando todas las consultas: ");
-        Console.WriteLine("-- Chistes: ");
-        foreach (var c in chistes)
+        Utilidades.WriteColoredLine("Consultas realizadas: ", ConsoleColor.Cyan);
+        ListarChistes();
+        ListarUniversidades();
+    }
+
+    private static void ListarChistes()
+    {
+        ListarChistes(chistes);
+    }
+    private static void ListarChistes(List<Chiste> ch)
+    {
+        Utilidades.WriteColoredLine("-- Chistes: ", ConsoleColor.Cyan);
+        foreach (var c in ch)
         {
             Console.WriteLine($"{c}\n");
         }
-        Console.WriteLine("-- Universidades: ");
-        foreach (var u in universidades)
+    }
+
+    private static void ListarUniversidades()
+    {
+        ListarUniversidades(universidades);
+    }
+    private static void ListarUniversidades(List<Universidad> unis)
+    {
+        Utilidades.WriteColoredLine("-- Universidades: ", ConsoleColor.Cyan);
+        foreach (var u in unis)
         {
             Console.WriteLine($"{u}\n");
         }
-        
     }
 
     private static void GuardarLineas()
