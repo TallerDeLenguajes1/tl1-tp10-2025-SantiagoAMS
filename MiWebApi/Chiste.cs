@@ -4,15 +4,20 @@ public class Chiste
 {
 
     [JsonPropertyName("type")]
-    public string Type { get;}
+    public string Tipo { get; }
 
     [JsonPropertyName("setup")]
-    public string Setup { get;}
+    public string Inicio { get; }
 
     [JsonPropertyName("punchline")]
-    public string Punchline { get;}
+    public string Remate { get; }
 
     [JsonPropertyName("id")]
-    public int Id { get;}
+    public int Id { get; }
+
+    public override string ToString()
+    {
+        return $"> {Inicio}\n> {Remate}";
+    }
 
 }

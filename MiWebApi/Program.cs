@@ -18,8 +18,8 @@ internal class Program
         @"http://universities.hipolabs.com/search?limit=1&country=Argentina&offset="
 
     };
-
-    private static readonly List<string> resultados = new List<string>();
+    private static readonly List<Chiste> chistes = [];
+    private static readonly List<Universidad> universidades = [];
 
     private static Task Main(string[] args)
     {
@@ -32,7 +32,7 @@ internal class Program
             Console.WriteLine(" 2 - Cambiar API");
             Console.WriteLine(" 3 - Mostrar lineas");
             Console.WriteLine(" 4 - Guardar lineas");
-            Console.WriteLine(" 4 - Salir");
+            Console.WriteLine(" 5 - Salir");
             Console.WriteLine("==========================");
             Console.WriteLine(" API: " + (seleccionada == null ? "Ninguna" : seleccionada));
             int opc = Utilidades.LeerEntero();
@@ -40,10 +40,10 @@ internal class Program
             switch (opc)
             {
                 case 1:
-                    if (seleccionada == null)
+                    while (seleccionada == null)
                     {
                         Utilidades.PrintError("Error, no seleccionaste una API...");
-
+                        CambiarAPI();
                     }
                     switch (seleccionada)
                     {
@@ -59,7 +59,7 @@ internal class Program
                     CambiarAPI();
                     break;
                 case 3:
-                    MostrarLineas();
+                    MostrarRescatado();
                     break;
                 case 4:
                     GuardarLineas();
@@ -77,23 +77,24 @@ internal class Program
     }
     private static async void BuscarChiste()
     {
-        var chiste = await LlamarApi<Chiste>(links[(int)Apis.Universidades]);
-        if (chiste.Count() <= 0)
+        var c = await LlamarApi<Chiste>(links[(int)Apis.Chistes]);
+        if (c.Count <= 0)
         {
             Utilidades.PrintError("No se obtuvo ningun chiste (no tiene gracia)...");
             return;
         }
-
+        chistes.AddRange(c);
 
     }
     private static async void BuscarUniversidad()
     {
-        var uni = await LlamarApi<Universidad>(links[(int)Apis.Chistes] + (Random.Shared.Next(0, 85)));
-        if (uni.Count() <= 0)
+        var uni = await LlamarApi<Universidad>(links[(int)Apis.Universidades] + (Random.Shared.Next(0, 85)));
+        if (uni.Count <= 0)
         {
             Utilidades.PrintError("No se obtuvo ninguna universidad...");
             return;
         }
+        universidades.AddRange(uni);
         //resultados.Add(Encoding.GetEncoding("latin1").GetString());
     }
 
@@ -128,9 +129,20 @@ internal class Program
 
     }
 
-    private static void MostrarLineas()
+    private static void MostrarRescatado()
     {
-
+        Console.WriteLine("Mostrando todas las consultas: ");
+        Console.WriteLine("-- Chistes: ");
+        foreach (var c in chistes)
+        {
+            Console.WriteLine(c);
+        }
+        Console.WriteLine("-- Universidades: ");
+        foreach (var u in universidades)
+        {
+            Console.WriteLine(u);
+        }
+        
     }
 
     private static void GuardarLineas()
