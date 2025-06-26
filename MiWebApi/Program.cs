@@ -5,17 +5,20 @@ using System.Text.Json.Serialization;
 internal class Program
 {
     private static readonly HttpClient client = new HttpClient();
-    private static string _apiSeleccionada = "";
+    private static int indexApiSeleccionada = -1;
 
-    private static readonly string[] apis = {
-        "Chistes",
-        "Universidades"
-    };
+    private enum Apis
+    {
+        Chistes,
+        Universidades
+    }
     private static readonly string[] links = {
         @"https://official-joke-api.appspot.com/random_joke",
-        @"http://universities.hipolabs.com/search?limit=1&" //country=pais+separado+con+mas   
+        @"http://universities.hipolabs.com/search?limit=1&country=Argentina&offset="
 
     };
+
+    private static readonly List<string> resultados = new List<string>();
 
     private static Task Main(string[] args)
     {
@@ -29,7 +32,7 @@ internal class Program
             Console.WriteLine(" 3 - Guardar lineas");
             Console.WriteLine(" 4 - Salir");
             Console.WriteLine("==========================");
-            Console.WriteLine(" API: " + _apiSeleccionada);
+            Console.WriteLine(" API: " + (indexApiSeleccionada < 0 ? "Ninguna" : Enum.GetValues<Apis>()[indexApiSeleccionada]));
             int opc = Utilidades.LeerEntero();
 
             switch (opc)
@@ -47,8 +50,27 @@ internal class Program
                     break;
             }
         }
+    }
 
+    private static void BuscarUniversidades()
+    {
+        string c = Utilidades.LeerString("Ingresa un pais (en ingles)");
+        var unis = LlamarApi<Universidad>(links[1]+(Random.Shared.Next(0,85)));
+    }
 
+    private static void BuscarBromas()
+    {
+
+    }
+
+    private static void CambiarApi()
+    {
+        Console.WriteLine();
+    }
+
+    private static void ListarApis()
+    {
+        Console.WriteLine("Apis disponibles");
     }
 
     private static async Task<List<T>> LlamarApi<T>(string url) where T : class
