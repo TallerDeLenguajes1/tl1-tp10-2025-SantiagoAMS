@@ -8,8 +8,32 @@ internal class Program
 
     private static Task Main(string[] args)
     {
+        string api = "";
+        while (true)
+        {
+            Console.WriteLine("==========================");
+            Console.WriteLine(" 1 - Consultar API");
+            Console.WriteLine(" 2 - Cambiar API");
+            Console.WriteLine(" 3 - Guardar lineas");
+            Console.WriteLine(" 4 - Salir");
+            Console.WriteLine("==========================");
+            Console.WriteLine(" API: " + api);
+            int opc = Utilidades.LeerEntero();
 
-        return null;
+            switch (opc)
+            {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                default:
+                    break;
+            }
+        }
 
 
     }
