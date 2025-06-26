@@ -14,4 +14,12 @@ internal class Program
 
     }
 
+    private static async Task<List<T>> LlamarApi<T>(string url) where T : class
+    {
+        var ret = await client.GetAsync(url);
+        ret.EnsureSuccessStatusCode();
+        var response = await ret.Content.ReadAsStringAsync();
+
+        return JsonSerializer.Deserialize<List<T>>(response);
+    }
 }
