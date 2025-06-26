@@ -54,27 +54,31 @@ internal class Program
                             BuscarUniversidad();
                             break;
                     }
+                    
                     break;
                 case 2:
                     Console.Clear();
                     CambiarAPI();
+                    Utilidades.Pausa();
                     break;
                 case 3:
                     Console.Clear();
                     MostrarRescatado();
+                    Utilidades.Pausa();
                     break;
                 case 4:
                     Console.Clear();
                     GuardarLineas();
+                    Utilidades.Pausa();
                     break;
                 case 5:
                     c = false;
                     continue;
                 default:
                     Utilidades.PrintError("Opción incorrecta...");
+                    Utilidades.Pausa();
                     break;
             }
-            Utilidades.Pausa();
 
         }
     }
@@ -89,6 +93,7 @@ internal class Program
         }
         ListarChistes(c);
         chistes.AddRange(c);
+        Utilidades.Pausa();
 
     }
     private static async void BuscarUniversidad()
@@ -101,7 +106,8 @@ internal class Program
         }
         ListarUniversidades(uni);
         universidades.AddRange(uni);
-        //resultados.Add(Encoding.GetEncoding("latin1").GetString());
+        Utilidades.Pausa();
+        
     }
 
 

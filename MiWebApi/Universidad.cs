@@ -23,6 +23,6 @@ public class Universidad
 
     public override string ToString()
     {
-        return $"{Nombre}, {Estado_Provincia}, {Pais}";
+        return $"{Nombre}, {((Estado_Provincia == null || Estado_Provincia.ToString().Length==0)? "": Estado_Provincia+", ")}{Pais}";
     }
 }
