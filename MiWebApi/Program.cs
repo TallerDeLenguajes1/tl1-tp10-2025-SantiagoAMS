@@ -14,14 +14,14 @@ internal class Program
         Universidades
     }
     private static readonly string[] links = {
-        @"https://official-joke-api.appspot.com/random_joke",
+        @"https://official-joke-api.appspot.com/jokes/random/2",
         @"http://universities.hipolabs.com/search?limit=1&country=Argentina&offset="
 
     };
     private static readonly List<Chiste> chistes = [];
     private static readonly List<Universidad> universidades = [];
 
-    private static Task Main(string[] args)
+    private static void Main(string[] args)
     {
         bool c = true;
         while (c)
@@ -35,8 +35,7 @@ internal class Program
             Console.WriteLine(" 5 - Salir");
             Console.WriteLine("==========================");
             Console.WriteLine(" API: " + (seleccionada == null ? "Ninguna" : seleccionada));
-            int opc = Utilidades.LeerEntero();
-
+            int opc = Utilidades.LeerEntero("Ingresá una opción:");
             switch (opc)
             {
                 case 1:
@@ -56,28 +55,33 @@ internal class Program
                     }
                     break;
                 case 2:
+                    Console.Clear();
                     CambiarAPI();
                     break;
                 case 3:
+                    Console.Clear();
                     MostrarRescatado();
                     break;
                 case 4:
+                    Console.Clear();
                     GuardarLineas();
                     break;
                 case 5:
                     c = false;
-                    break;
+                    continue;
                 default:
                     Utilidades.PrintError("Opción incorrecta...");
                     break;
             }
+            Utilidades.Pausa();
 
         }
-        return null;
     }
     private static async void BuscarChiste()
     {
-        var c = await LlamarApi<Chiste>(links[(int)Apis.Chistes]);
+        var query = links[(int)Apis.Chistes];
+        Console.WriteLine("Query: "+query);
+        var c = await LlamarApi<Chiste>(query);
         if (c.Count <= 0)
         {
             Utilidades.PrintError("No se obtuvo ningun chiste (no tiene gracia)...");
@@ -135,12 +139,12 @@ internal class Program
         Console.WriteLine("-- Chistes: ");
         foreach (var c in chistes)
         {
-            Console.WriteLine(c);
+            Console.WriteLine($"{c}\n");
         }
         Console.WriteLine("-- Universidades: ");
         foreach (var u in universidades)
         {
-            Console.WriteLine(u);
+            Console.WriteLine($"{u}\n");
         }
         
     }

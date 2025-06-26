@@ -74,5 +74,21 @@ public static class Utilidades
         s = s.ToUpper();
         return s == "SI" || s == "S" || s == "Y" || s == "YES" || s == "1";
     }
+
+    public static void WriteColoredLine(string text, ConsoleColor color)
+    {
+        ConsoleColor c = Console.ForegroundColor;
+        Console.ForegroundColor = color;
+        Console.WriteLine(text);
+        Console.ForegroundColor = c;
+    }
+
+    public static void WriteLine(string text, ConsoleColor color)
+    {
+        ConsoleColor c = Console.ForegroundColor;
+        Console.ForegroundColor = color;
+        Console.Write(text);
+        Console.ForegroundColor = c;
+    }
 }
 

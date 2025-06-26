@@ -23,6 +23,6 @@ public class Universidad
 
     public override string ToString()
     {
-        return $"> {Nombre}";
+        return $"{Nombre}, {Estado_Provincia}, {Pais}";
     }
 }
