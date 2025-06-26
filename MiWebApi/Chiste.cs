@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-public class Broma
+public class Chiste
 {
 
     [JsonPropertyName("type")]

@@ -5,24 +5,37 @@ using System.Text.Json.Serialization;
 internal class Program
 {
     private static readonly HttpClient client = new HttpClient();
+    private static string _apiSeleccionada = "";
+
+    private static readonly string[] apis = {
+        "Chistes",
+        "Universidades"
+    };
+    private static readonly string[] links = {
+        @"https://official-joke-api.appspot.com/random_joke",
+        @"http://universities.hipolabs.com/search?limit=1&" //country=pais+separado+con+mas   
+
+    };
 
     private static Task Main(string[] args)
     {
-        string api = "";
+
         while (true)
         {
+            Console.Clear();
             Console.WriteLine("==========================");
             Console.WriteLine(" 1 - Consultar API");
             Console.WriteLine(" 2 - Cambiar API");
             Console.WriteLine(" 3 - Guardar lineas");
             Console.WriteLine(" 4 - Salir");
             Console.WriteLine("==========================");
-            Console.WriteLine(" API: " + api);
+            Console.WriteLine(" API: " + _apiSeleccionada);
             int opc = Utilidades.LeerEntero();
 
             switch (opc)
             {
                 case 1:
+
                     break;
                 case 2:
                     break;
