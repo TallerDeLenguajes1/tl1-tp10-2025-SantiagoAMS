@@ -22,8 +22,10 @@ internal class Program
     private static readonly List<Chiste> chistes = [];
     private static readonly List<Universidad> universidades = [];
 
-    private static void Main(string[] args)
+    #pragma warning disable
+    private static async Task Main(string[] args)
     {
+        #pragma warning enable
         bool c = true;
         while (c)
         {
@@ -35,14 +37,24 @@ internal class Program
             Console.WriteLine(" 4 - Guardar lineas");
             Console.WriteLine(" 5 - Salir");
             Console.WriteLine("==========================");
-            Console.WriteLine(" API: " + (seleccionada == null ? "Ninguna" : seleccionada));
+            /**/
+            Console.Write(" API: ");
+            if (seleccionada == null)
+            {
+                Utilidades.WriteColoredLine("Ninguna", ConsoleColor.Red);
+            }
+            else
+            {
+                Utilidades.WriteColoredLine(seleccionada.ToString(), ConsoleColor.Green);
+            }
+
             int opc = Utilidades.LeerEntero("\nIngresá una opción:");
             switch (opc)
             {
                 case 1:
                     while (seleccionada == null)
                     {
-                        Utilidades.PrintError("Error, no seleccionaste una API...");
+                        Utilidades.PrintError("\nError, no seleccionaste una API...");
                         CambiarAPI();
                     }
                     switch (seleccionada)
@@ -54,7 +66,7 @@ internal class Program
                             BuscarUniversidad();
                             break;
                     }
-                    
+
                     break;
                 case 2:
                     Console.Clear();
@@ -107,7 +119,7 @@ internal class Program
         ListarUniversidades(uni);
         universidades.AddRange(uni);
         Utilidades.Pausa();
-        
+
     }
 
 
